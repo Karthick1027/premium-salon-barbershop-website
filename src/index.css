@@ -1,0 +1,162 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Brand palette */
+  --color-ink: #05060d;
+  --color-night: #101117;
+  --color-navy: #0b1024;
+  --color-card: #1a1b23;
+  --color-line: #30313a;
+  --color-muted: #b8bbc5;
+  --color-accent: #ff850a;
+  --color-accent-soft: #ff9d3b;
+
+  /* Typography */
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Outfit', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale */
+  --text-display: clamp(2.6rem, 1.6rem + 4.6vw, 5.75rem);
+  --text-display--line-height: 1.02;
+  --text-h2: clamp(2rem, 1.45rem + 2.4vw, 3.5rem);
+  --text-h2--line-height: 1.08;
+  --text-lead: clamp(1.05rem, 0.98rem + 0.3vw, 1.25rem);
+  --text-lead--line-height: 1.65;
+
+  /* Motion */
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 1s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-ink font-sans text-white antialiased;
+    overflow-x: clip;
+  }
+
+  /* Lock page scroll while the gallery lightbox is open */
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  /* Sections receive programmatic focus after menu navigation; no outline needed. */
+  section[tabindex='-1']:focus {
+    outline: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 0.375rem;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  img {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  /* Shared button styles */
+  .btn-primary,
+  .btn-outline {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold tracking-wide transition duration-300 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-ink shadow-[0_10px_30px_-10px_rgba(255,133,10,0.7)] hover:bg-accent-soft;
+  }
+
+  .btn-outline {
+    @apply border border-white/25 text-white hover:border-accent hover:text-accent;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-xs font-bold tracking-[0.28em] text-accent uppercase;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-8 bg-accent;
+  }
+
+  .form-select {
+    @apply appearance-none bg-no-repeat pr-11;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF850A' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 1rem center;
+    background-size: 1.1rem;
+  }
+
+  .form-select option,
+  .form-select optgroup {
+    background-color: var(--color-night);
+    color: #fff;
+  }
+
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
+  }
+
+  .form-field {
+    @apply w-full rounded-xl border border-line bg-ink/70 px-4 py-3 text-base text-white placeholder:text-muted/60 transition focus:border-accent focus:ring-2 focus:ring-accent/30 focus:outline-none aria-[invalid=true]:border-red-400;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
